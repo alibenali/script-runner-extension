@@ -1,4 +1,9 @@
 chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+
+    document.getElementById('settingsIcon').addEventListener('click', () => {
+        chrome.runtime.openOptionsPage(); // This opens the extension's options page
+    });
+
     document.getElementById('ankle').addEventListener('click', () => {
         chrome.runtime.sendMessage({action: "runScript", scriptName: "ankle_content.js", tabId: tabs[0].id});
     });

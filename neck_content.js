@@ -1,9 +1,14 @@
 // Neck Script
 
-async function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+async function delay() {
+  // Retrieve the delay setting from storage
+  return new Promise((resolve) => {
+      chrome.storage.sync.get('neckDelay', function(data) {
+          const delayTime = (data.neckDelay || 5) * 1000; // Default to 5 seconds if not set
+          setTimeout(resolve, delayTime);
+      });
+  });
 }
-
 async function waitForElement(selector, number=false) {
   console.log('Waiting for:');
   console.log(selector);
@@ -59,11 +64,9 @@ async function phys1(){
   
   textaread_element = document.querySelectorAll('textarea')[1];
   textaread_element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  await delay(500);
   textaread_element.value = 'Passive ROM of the spine is not advised by the VBA, to ensure safety of the Veteran';
   textaread_element.innerHTML = 'Passive ROM of the spine is not advised by the VBA, to ensure safety of the Veteran';
 
-  await delay(500);
   await waitForElement('div[aria-label*="Is there evidence of pain?"]').then((element) => {
     element.querySelectorAll('input[type="radio"]')[1].click();
   });
@@ -204,38 +207,37 @@ async function risk(){
 }
 
 async function process(){
-    var sleepAmount = (Math.floor(Math.random() * 4) + 8)*1000;
     console.log('Process started');
     await history();
     console.log('finished history');
-    await delay(sleepAmount);
+    await delay();
   	//document.querySelector('div[role="navigation"]').querySelectorAll('button')[1].click();
   	document.querySelector('#w-next').click();
     await phys1();
-    await delay(sleepAmount);
+    await delay();
   	//document.querySelector('div[role="navigation"]').querySelectorAll('button')[2].click();
     document.querySelector('#w-next').click();
   	await phys2();
-    await delay(sleepAmount);
+    await delay();
   	//document.querySelector('div[role="navigation"]').querySelectorAll('button')[3].click();
     document.querySelector('#w-next').click();
   	await phys3();
-    await delay(sleepAmount);
+    await delay();
   	document.querySelector('div[role="navigation"]').querySelectorAll('button')[4].click();
     await phys4();
-    await delay(sleepAmount);
+    await delay();
   	//document.querySelector('div[role="navigation"]').querySelectorAll('button')[5].click();
     document.querySelector('#w-next').click();  
     await additional();
-    await delay(sleepAmount);
+    await delay();
   	//document.querySelector('div[role="navigation"]').querySelectorAll('button')[6].click();
     document.querySelector('#w-next').click();    
     await diag_test();
-    await delay(sleepAmount);
+    await delay();
   	//document.querySelector('div[role="navigation"]').querySelectorAll('button')[7].click();
     document.querySelector('#w-next').click();    
     await diag();
-    await delay(sleepAmount);
+    await delay();
   	//document.querySelector('div[role="navigation"]').querySelectorAll('button')[8].click();
     document.querySelector('#w-next').click();    
     await risk();

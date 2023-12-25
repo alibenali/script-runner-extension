@@ -1,6 +1,12 @@
 // Foot script
-async function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+async function delay() {
+  // Retrieve the delay setting from storage
+  return new Promise((resolve) => {
+      chrome.storage.sync.get('footDelay', function(data) {
+          const delayTime = (data.footDelay || 5) * 1000; // Default to 5 seconds if not set
+          setTimeout(resolve, delayTime);
+      });
+  });
 }
 
 async function waitForElement(selector, number=false) {

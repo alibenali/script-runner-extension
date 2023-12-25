@@ -1,6 +1,12 @@
 //Elbow script
-async function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+async function delay() {
+  // Retrieve the delay setting from storage
+  return new Promise((resolve) => {
+      chrome.storage.sync.get('elbowDelay', function(data) {
+          const delayTime = (data.elbowDelay || 5) * 1000; // Default to 5 seconds if not set
+          setTimeout(resolve, delayTime);
+      });
+  });
 }
 
 async function waitForElement(selector, number=false) {
@@ -260,33 +266,32 @@ async function risk(){
 }
    
 async function process(){
-    var sleepAmount = (Math.floor(Math.random() * 4) + 8)*1000;
 
     console.log('Process started');
     await history();
     console.log('finished history');
-    await delay(sleepAmount);
+    await delay();
   	//document.querySelector('div[role="navigation"]').querySelectorAll('button')[1].click();
   	document.querySelector('#w-next').click();
     await phys1();
   	console.log('phys1 done');
-    await delay(sleepAmount);
+    await delay();
     document.querySelector('#w-next').click();
   	await phys2();
     console.log('phys2 done');
-    await delay(sleepAmount);
+    await delay();
     document.querySelector('#w-next').click();
   	await additional();
     console.log('additional done');
-    await delay(sleepAmount);
+    await delay();
     document.querySelector('#w-next').click();
   	await diag_test();
   	console.log('diag_test done');
-    await delay(sleepAmount);
+    await delay();
     document.querySelector('#w-next').click();
   	await diag();
     console.log('diag done');
-    await delay(sleepAmount);
+    await delay();
     document.querySelector('#w-next').click();
   	await risk();
     console.log('risk done');
